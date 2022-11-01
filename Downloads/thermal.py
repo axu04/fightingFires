@@ -6,7 +6,7 @@ import select
 import tty
 import termios
 
-cap = cv2.VideoCapture(1)
+cap = cv2.VideoCapture(2)
 cap.set(5, 60)
 if not cap.isOpened():
     print("Cannot open camera")
@@ -55,7 +55,7 @@ def loopCamera(camera):
         if isData():
             c = sys.stdin.read(1)
             if c == 'a': 
-                cv2.imwrite("rgb{}.jpg".format(img_num), frame)
+                cv2.imwrite("thermal{}.jpg".format(img_num), frame)
                 img_num += 1
     
 
