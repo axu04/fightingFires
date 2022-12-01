@@ -8,11 +8,7 @@ class Rgb_Handler:
         self.cap = cv2.VideoCapture(port_index)
         self.cap.set(5, fps_cap)
 
-<<<<<<< HEAD
-        if not cap.isOpened():
-=======
         if not self.cap.isOpened():
->>>>>>> a5705e6a08a0137147fc65aca11060022b0391a5
             print("Cannot open camera")
             exit()
 
