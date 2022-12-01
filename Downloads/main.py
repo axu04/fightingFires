@@ -25,6 +25,7 @@ def begin_data_stream():
     while True:
         # print("flag AAA")
         rgb_frame = rgb_handler.get_frame()
+        rgb_handler.print_fps()
         # thermal_frame = thermal_handler.get_frame()
         # print("flag A")
         cv2.imshow("rgb frame", rgb_frame)
