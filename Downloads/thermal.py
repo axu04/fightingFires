@@ -1,66 +1,55 @@
 import cv2
 import time
-
 import sys
 import select
 import tty
 import termios
+import numpy as np
+import cv2
+from flirpy.camera.boson import Boson
+from datetime import datetime as dt
+import csv
+import os
+import sys
+# import matplotlib.pyplot as plt
+import winsound
+from win32com.client import Dispatch
+import shutil
 
-cap = cv2.VideoCapture(2)
-cap.set(5, 60)
-if not cap.isOpened():
-    print("Cannot open camera")
-    exit()
+class Thermal_Handler:
 
-framecount = 0
-prevMillis = 0
+    def __init__(self, fps_cap = 60):
+        self.cap = Boson.find_video_device()
+        self.cap.set(5, fps_cap)
 
-print(cap.get(5))
+        if not cap.isOpened():
+            print("Cannot open camera")
+            exit()
 
-def fpsCount():
-    global prevMillis
-    global framecount
-    millis = int(round(time.time() * 1000))
-    framecount += 1
-    if millis - prevMillis > 1000:
-        print(framecount)
-        prevMillis = millis 
-        framecount = 0
+        self.framecount = 0
+        self.prevMillis = 0
 
-def isData():
-    return select.select([sys.stdin], [], [], 0) == ([sys.stdin], [], [])
+        print(self.cap.get(5))
 
-def loopCamera(camera):
-    img_num = 0
-    tty.setcbreak(sys.stdin.fileno())
-
-    while True:
-
-        ret, frame = camera.read()
-        #frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-        #blur = cv2.blur(frame, (5, 5))
-        #ret, thresh = cv2.threshold(blur, 170, 255, 0)
-        if not ret:
-            print("Can't receive frame (stream end?). Exiting ...")
-            break
-
-        cv2.imshow("frame", frame)
-
-        # fpsCount()    
-        # k = cv2.waitKey(1) & 0xff
-        # if k == 27:
-        #     print("hererererere")
-        #     break
-
-        if isData():
-            c = sys.stdin.read(1)
-            if c == 'a': 
-                cv2.imwrite("thermal{}.jpg".format(img_num), frame)
-                img_num += 1
+    def print_fps(self):
+        global prevMillis
+        global framecount
+        millis = int(round(time.time() * 1000))
+        framecount += 1
+        if millis - prevMillis > 1000:
+            print(framecount)
+            prevMillis = millis 
+            framecount = 0
     
+    def get_frame(self):
+        ret, frame = self.cap.read()
+        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        if not ret:
+            print("Can't receive frame (stream end?).")
+            sys.exit(1)
 
-
-loopCamera(cap)
-
-cap.release()
-cv2.destroyAllWindows()
+        # cv2.imshow("frame", frame)
+        return frame
+    
+    def release (self):
+        self.cap.release()
