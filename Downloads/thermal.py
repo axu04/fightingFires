@@ -11,25 +11,19 @@ from datetime import datetime as dt
 import csv
 import os
 import sys
-<<<<<<< HEAD
 # import matplotlib.pyplot as plt
 import winsound
 from win32com.client import Dispatch
 import shutil
-=======
->>>>>>> a5705e6a08a0137147fc65aca11060022b0391a5
 
 class Thermal_Handler:
 
     def __init__(self, fps_cap = 60):
-        self.cap = Boson.find_video_device()
+        device_index = Boson.find_video_device()
+        self.cap = cv2.VideoCapture(device_index)
         self.cap.set(5, fps_cap)
 
-<<<<<<< HEAD
-        if not cap.isOpened():
-=======
         if not self.cap.isOpened():
->>>>>>> a5705e6a08a0137147fc65aca11060022b0391a5
             print("Cannot open camera")
             exit()
 
