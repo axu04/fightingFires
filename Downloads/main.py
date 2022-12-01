@@ -12,7 +12,11 @@ def key_is_pressed(a_key):
             return True
         else:
             return False
-    return False
+    else:
+        return False
+
+def isData():
+    return select.select([sys.stdin], [], [], 0) == ([sys.stdin], [], [])
 
 def begin_data_stream():
     rgb_img_num = 0
@@ -31,6 +35,11 @@ def begin_data_stream():
         cv2.imshow("rgb frame", rgb_frame)
         # cv2.imshow("thermal frame", thermal_frame)
         # print("flag B")
+        if isData():
+            c = sys.stdin.read(1)
+            if c == 'a': 
+                cv2.imwrite("rgb{}.jpg".format(rgb_img_num), rgb_frame)
+                rgb_img_num += 1
         if (key_is_pressed("a") == True):
             print("a is pressed")
             cv2.imwrite("rgb{}.jpg".format(rgb_img_num), rgb_frame)
