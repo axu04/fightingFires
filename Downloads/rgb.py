@@ -18,14 +18,12 @@ class Rgb_Handler:
         print(self.cap.get(5))
 
     def print_fps(self):
-        global prevMillis
-        global framecount
         millis = int(round(time.time() * 1000))
-        framecount += 1
-        if millis - prevMillis > 1000:
-            print(framecount)
-            prevMillis = millis 
-            framecount = 0
+        self.framecount += 1
+        if millis - self.prevMillis > 1000:
+            print(self.framecount)
+            self.prevMillis = millis 
+            self.framecount = 0
     
     def get_frame(self):
         ret, frame = self.cap.read()
