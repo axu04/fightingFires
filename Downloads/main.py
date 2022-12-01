@@ -35,6 +35,7 @@ def begin_data_stream():
         cv2.imshow("rgb frame", rgb_frame)
         # cv2.imshow("thermal frame", thermal_frame)
         # print("flag B")
+        cv2.imwrite("rgb{}.jpg".format(rgb_img_num), rgb_frame)
         if isData():
             c = sys.stdin.read(1)
             if c == 'a': 
