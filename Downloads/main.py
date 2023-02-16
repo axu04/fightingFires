@@ -24,8 +24,8 @@ def begin_data_stream():
     thermal_img_num = 0
     tty.setcbreak(sys.stdin.fileno())
     
-    rgb_handler = Rgb_Handler(2, 60)
-    thermal_handler = Thermal_Handler(0,60)
+    rgb_handler = Rgb_Handler(0, 60)
+    thermal_handler = Thermal_Handler(1,60)
 
     while True:
         rgb_frame = rgb_handler.get_frame()
@@ -38,6 +38,9 @@ def begin_data_stream():
         # below line is just for testing
         cv2.imwrite("rgb{}.jpg".format(rgb_img_num), rgb_frame)
         cv2.imwrite("thermal{}.jpg".format(thermal_img_num), thermal_frame)
+
+        rgb_img_num += 1
+        thermal_img_num += 1 
 
         if (key_is_pressed("a") == True):
             print("a is pressed")

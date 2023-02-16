@@ -3,7 +3,6 @@ import time
 import sys
 import numpy as np
 import cv2
-from flirpy.camera.boson import Boson
 from datetime import datetime as dt
 import sys
 # import matplotlib.pyplot as plt
