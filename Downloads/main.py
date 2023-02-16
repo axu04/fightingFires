@@ -1,5 +1,5 @@
 import sys
-import tty
+#import tty
 from rgb import Rgb_Handler
 from thermal import Thermal_Handler
 import cv2
@@ -22,9 +22,9 @@ def isData():
 def begin_data_stream():
     rgb_img_num = 0
     thermal_img_num = 0
-    tty.setcbreak(sys.stdin.fileno())
+    #tty.setcbreak(sys.stdin.fileno())
     
-    rgb_handler = Rgb_Handler(0, 60)
+    rgb_handler = Rgb_Handler(2, 60)
     thermal_handler = Thermal_Handler(1,60)
 
     while True:
@@ -42,20 +42,20 @@ def begin_data_stream():
         rgb_img_num += 1
         thermal_img_num += 1 
 
-        if (key_is_pressed("a") == True):
-            print("a is pressed")
-            cv2.imwrite("rgb{}.jpg".format(rgb_img_num), rgb_frame)
-            rgb_img_num += 1
-
-        if (key_is_pressed("b") == True):
-            print("b is pressed")
-            # cv2.imwrite("thermal{}.jpg".format(thermal_img_num), thermal_frame)
-            thermal_img_num += 1
-
-        if (key_is_pressed("q") == True):
-            print("q is pressed")
-            rgb_handler.release()
-            # thermal_handler.release()
-            cv2.destroyAllWindows()
+        #if (key_is_pressed("a") == True):
+        #    print("a is pressed")
+        #    cv2.imwrite("rgb{}.jpg".format(rgb_img_num), rgb_frame)
+        #    rgb_img_num += 1
+        #
+        #if (key_is_pressed("b") == True):
+        #    print("b is pressed")
+        #    # cv2.imwrite("thermal{}.jpg".format(thermal_img_num), thermal_frame)
+        #    thermal_img_num += 1
+        #
+        #if (key_is_pressed("q") == True):
+        #    print("q is pressed")
+        #    rgb_handler.release()
+        #    # thermal_handler.release()
+        #    cv2.destroyAllWindows()
 
 begin_data_stream()
