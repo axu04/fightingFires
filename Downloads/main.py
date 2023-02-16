@@ -1,5 +1,5 @@
 import sys
-#import tty
+import os
 from rgb import Rgb_Handler
 from thermal import Thermal_Handler
 import cv2
@@ -20,42 +20,33 @@ def isData():
     return select.select([sys.stdin], [], [], 0) == ([sys.stdin], [], [])
 
 def begin_data_stream():
-    rgb_img_num = 0
-    thermal_img_num = 0
-    #tty.setcbreak(sys.stdin.fileno())
+    img_num = 0
     
     rgb_handler = Rgb_Handler(2, 60)
-    thermal_handler = Thermal_Handler(1,60)
+    thm_handler = Thermal_Handler(1,60)
+
+    usb_path_rgb = "D:/rgb_images"
+    usb_path_thm = "D:/thm_images"
 
     while True:
         rgb_frame = rgb_handler.get_frame()
         rgb_handler.print_fps()
-        thermal_frame = thermal_handler.get_frame()
 
-        cv2.imshow("rgb frame", rgb_frame)
-        cv2.imshow("thermal frame", thermal_frame)
+        thm_frame = thm_handler.get_frame()
+
+        # displays the image 
+        #cv2.imshow("rgb frame", rgb_frame)
+        #cv2.imshow("thm frame", thm_frame)
         
-        # below line is just for testing
-        cv2.imwrite("rgb{}.jpg".format(rgb_img_num), rgb_frame)
-        cv2.imwrite("thermal{}.jpg".format(thermal_img_num), thermal_frame)
+        filename_rgb = f"rgb{img_num}.jpg"
+        filename_thm = f"thm{img_num}.jpg"
+        
+        save_path_rgb = os.path.join(usb_path_rgb, filename_rgb)
+        save_path_thm = os.path.join(usb_path_thm, filename_thm)
 
-        rgb_img_num += 1
-        thermal_img_num += 1 
+        cv2.imwrite(save_path_rgb, rgb_frame)
+        cv2.imwrite(save_path_thm, thm_frame)
 
-        #if (key_is_pressed("a") == True):
-        #    print("a is pressed")
-        #    cv2.imwrite("rgb{}.jpg".format(rgb_img_num), rgb_frame)
-        #    rgb_img_num += 1
-        #
-        #if (key_is_pressed("b") == True):
-        #    print("b is pressed")
-        #    # cv2.imwrite("thermal{}.jpg".format(thermal_img_num), thermal_frame)
-        #    thermal_img_num += 1
-        #
-        #if (key_is_pressed("q") == True):
-        #    print("q is pressed")
-        #    rgb_handler.release()
-        #    # thermal_handler.release()
-        #    cv2.destroyAllWindows()
+        img_num += 1
 
 begin_data_stream()
