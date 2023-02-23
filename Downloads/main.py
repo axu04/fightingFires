@@ -23,7 +23,7 @@ def begin_data_stream():
     img_num = 0
     
     rgb_handler = Rgb_Handler(2, 60)
-    thm_handler = Thermal_Handler(1,60)
+    thm_handler = Thermal_Handler(0,60)
 
     usb_path_rgb = "D:/rgb_images"
     usb_path_thm = "D:/thm_images"
