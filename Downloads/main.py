@@ -25,8 +25,8 @@ def begin_data_stream():
     rgb_handler = Rgb_Handler(2, 60)
     thm_handler = Thermal_Handler(0,60)
 
-    usb_path_rgb = "D:/rgb_images"
-    usb_path_thm = "D:/thm_images"
+    usb_path_rgb = "/media/pi/DCA5-2D88/rgb_images"
+    usb_path_thm = "/media/pi/DCA5-2D88/thm_images"
 
     while True:
         rgb_frame = rgb_handler.get_frame()
