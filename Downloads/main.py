@@ -4,7 +4,7 @@ from rgb import Rgb_Handler
 from thermal import Thermal_Handler
 import cv2
 import select
-
+# send help
 
 def key_is_pressed(a_key):
     if (True == select.select([sys.stdin], [], [], 0) == ([sys.stdin], [], [])):
