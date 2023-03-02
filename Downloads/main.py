@@ -46,6 +46,10 @@ class Data_Collector():
 
                 cv2.imwrite(save_path_rgb, rgb_frame)
                 cv2.imwrite(save_path_thm, thm_frame)
+                
+                cv2.imshow('rgb', rgb_frame)
+                cv2.imshow('thermal', thm_frame)
+                cv2.waitKey(1)
 
                 img_num += 1
             else:
