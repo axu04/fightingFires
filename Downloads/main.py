@@ -44,9 +44,18 @@ class Data_Collector():
                 save_path_rgb = os.path.join(usb_path_rgb, filename_rgb)
                 save_path_thm = os.path.join(usb_path_thm, filename_thm)
 
-                cv2.imwrite(save_path_rgb, rgb_frame)
-                cv2.imwrite(save_path_thm, thm_frame)
+                #cv2.imwrite(save_path_rgb, rgb_frame)
+                #cv2.imwrite(save_path_thm, thm_frame)
+
+                cv2.namedWindow('rgb', cv2.WINDOW_NORMAL)
+                cv2.namedWindow('thermal', cv2.WINDOW_NORMAL)
+
+                cv2.resizeWindow('rgb', 100, 100)
+                cv2.resizeWindow('thermal', 100, 100)
                 
+                cv2.moveWindow('rgb', 50, 100)
+                cv2.moveWindow('thermal', 400, 100)
+
                 cv2.imshow('rgb', rgb_frame)
                 cv2.imshow('thermal', thm_frame)
                 cv2.waitKey(1)
