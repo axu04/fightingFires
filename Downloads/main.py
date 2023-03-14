@@ -1,12 +1,10 @@
 import sys
 import os
-import os
+from seg import h_seg
 from rgb import Rgb_Handler
 from thermal import Thermal_Handler
 import cv2
 import select
-# modules for button press
-import RPi.GPIO as GPIO # Import Raspberry Pi GPIO library
 # modules for button press
 import RPi.GPIO as GPIO # Import Raspberry Pi GPIO library
 
@@ -64,7 +62,7 @@ class Data_Collector():
 
                 cv2.imshow('rgb', rgb_frame)
                 cv2.imshow('thermal', thm_frame)
-                cv2.waitKey(1)
+                cv2.waitKey(100)
 
                 img_num += 1
             else:
