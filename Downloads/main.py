@@ -1,41 +1,12 @@
-Skip to content
-Search or jump to…
-Pull requests
-Issues
-Codespaces
-Marketplace
-Explore
- 
-@axu04 
-axu04
-/
-fightingFires
-Public
-Fork your own copy of axu04/fightingFires
-Code
-Issues
-Pull requests
-Actions
-Projects
-Wiki
-Security
-Insights
-Settings
-fightingFires/Downloads/main.py /
-@axu04
-axu04 windowSize
-Latest commit 4322b8a 4 days ago
- History
- 4 contributors
-@jeremy-jung@axu04@henryzou50@aliulex
-83 lines (61 sloc)  2.41 KB
-
 import sys
+import os
 import os
 from rgb import Rgb_Handler
 from thermal import Thermal_Handler
 import cv2
 import select
+# modules for button press
+import RPi.GPIO as GPIO # Import Raspberry Pi GPIO library
 # modules for button press
 import RPi.GPIO as GPIO # Import Raspberry Pi GPIO library
 
@@ -102,6 +73,20 @@ class Data_Collector():
         # GPIO.cleanup()
 
 Data_Collector().begin_data_stream()
+
+'''
+foo():
+    self.GO = !(self.GO)
+add_event(foo)
+while True:
+    if (self.GO):
+        # do stuff
+
+    else:
+        continue
+
+
+'''
 
 '''
 foo():
