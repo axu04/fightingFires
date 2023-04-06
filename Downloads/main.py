@@ -69,7 +69,7 @@ class Data_Collector():
 
             #cv2.imwrite(save_path_rgb, rgb_frame)
             #cv2.imwrite(save_path_thm, thermal_frame)
-
+            self.img_num+=1
         self.window.after(10, self._render)
 
     def begin_data_stream(self):
