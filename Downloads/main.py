@@ -5,94 +5,82 @@ from rgb import Rgb_Handler
 from thermal import Thermal_Handler
 import cv2
 import select
-# modules for button press
-import RPi.GPIO as GPIO # Import Raspberry Pi GPIO library
+import time
+from tkinter import *
+from PIL import Image, ImageTk
 
 class Data_Collector():
     def __init__(self):
-        GPIO.setwarnings(False) # Ignore warning for now
-        GPIO.setmode(GPIO.BOARD) # Use physical pin numbering
-        GPIO.setup(10, GPIO.IN, pull_up_down=GPIO.PUD_DOWN) # Set pin 10 to be an input pin and set initial value to be pulled low (off)
-        self.take_pictures = False
+        self.take_pictures = True
+
+        self.rgb_handler = Rgb_Handler(0, 60)
+        self.thermal_handler = Rgb_Handler(0, 60) # replace with actual thermal_handler
+
+        # GUI member variables
+        self.window = Tk()
+        self.window.title("Camera GUI")
+
+        # Create a label for displaying the video feed
+        self.label_rgb = Label(self.window, width = 400, height= 300)
+        self.label_rgb.pack(side = LEFT, padx=10, pady=10)
+        self.label_thermal = Label(self.window, width = 400, height= 300)
+        self.label_thermal.pack(side = LEFT,padx=10, pady=10)
+
+        # Make button now. Initialize later
+        self.record_button = None 
+        
+        # Image saving information
+        self.img_num = 0
+        self.usb_path_rgb = "/media/pi/DCA5-2D88/rgb_images"
+        self.usb_path_thm = "/media/pi/DCA5-2D88/thm_images"
 
     def _button_callback(self, channel):
         self.take_pictures = not (self.take_pictures)
+    
+    def _toggle_record(self):
+        self.take_pictures = not self.take_pictures
+    
+    def _render (self):
+        if (self.take_pictures == True):
+            rgb_frame = self.rgb_handler.get_frame()
+            thermal_frame = self.thermal_handler.get_frame()
+
+            rgbimg = Image.fromarray(rgb_frame)
+            rgbimg = rgbimg.resize((400, 300))
+            rgbimgtk = ImageTk.PhotoImage(image=rgbimg)
+            thermalimg = Image.fromarray(thermal_frame)
+            thermalimg = thermalimg.resize((400, 300))
+            thermalimgtk = ImageTk.PhotoImage(image=thermalimg)
+
+                # update the label with the new image
+            self.label_rgb.imgtk = rgbimgtk
+            self.label_rgb.config(image=rgbimgtk)
+            self.label_thermal.imgtk = thermalimgtk
+            self.label_thermal.config(image=thermalimgtk)
+            
+            filename_rgb = f"rgb{self.img_num}.jpg"
+            filename_thm = f"thm{self.img_num}.jpg"
+                            
+            save_path_rgb = os.path.join(self.usb_path_rgb, filename_rgb)
+            save_path_thm = os.path.join(self.usb_path_thm, filename_thm)
+
+            # rgb_frame = h_seg(rgb_frame)
+            # thm_frame = h_seg(thm_frame)
+
+            #cv2.imwrite(save_path_rgb, rgb_frame)
+            #cv2.imwrite(save_path_thm, thermal_frame)
+
+        self.window.after(10, self._render)
 
     def begin_data_stream(self):
-        GPIO.add_event_detect(10,GPIO.RISING, callback = self._button_callback)
-        img_num = 0
-        
-        rgb_handler = Rgb_Handler(2, 60)
-        thm_handler = Thermal_Handler(0,60)
+        # GPIO.add_event_detect(10,GPIO.RISING, callback = self._button_callback)
+        self.record_button = Button(self.window, text = 'START/STOP', height=5, width=10, command = self._toggle_record)
+        self.record_button.pack()
 
-        usb_path_rgb = "/media/pi/DCA5-2D88/rgb_images"
-        usb_path_thm = "/media/pi/DCA5-2D88/thm_images"
+        self._render()
 
-        while True:
-            if (self.take_pictures == True):
-                rgb_frame = rgb_handler.get_frame()
-                rgb_handler.print_fps()
-
-                thm_frame = thm_handler.get_frame()
-
-                # displays the image 
-                #cv2.imshow("rgb frame", rgb_frame)
-                #cv2.imshow("thm frame", thm_frame)
-                
-                filename_rgb = f"rgb{img_num}.jpg"
-                filename_thm = f"thm{img_num}.jpg"
-                
-                save_path_rgb = os.path.join(usb_path_rgb, filename_rgb)
-                save_path_thm = os.path.join(usb_path_thm, filename_thm)
-
-                rgb_frame = h_seg(rgb_frame)
-                thm_frame = h_seg(thm_frame)
-
-                #cv2.imwrite(save_path_rgb, rgb_frame)
-                #cv2.imwrite(save_path_thm, thm_frame)
-
-                cv2.namedWindow('rgb', cv2.WINDOW_NORMAL)
-                cv2.namedWindow('thermal', cv2.WINDOW_NORMAL)
-
-                cv2.resizeWindow('rgb', 100, 100)
-                cv2.resizeWindow('thermal', 100, 100)
-                
-                cv2.moveWindow('rgb', 50, 100)
-                cv2.moveWindow('thermal', 400, 100)
-
-                cv2.imshow('rgb', rgb_frame)
-                cv2.imshow('thermal', thm_frame)
-                cv2.waitKey(100)
-
-                img_num += 1
-            else:
-                continue
-            
+        self.window.mainloop()
+        # TODO Uncomment for prod
         # GPIO.cleanup()
 
 Data_Collector().begin_data_stream()
-
-'''
-foo():
-    self.GO = !(self.GO)
-add_event(foo)
-while True:
-    if (self.GO):
-        # do stuff
-
-    else:
-        continue
-
-
-'''
-
-'''
-foo():
-    self.GO = !(self.GO)
-add_event(foo)
-while True:
-    if (self.GO):
-        # do stuff
-    else:
-        continue
-'''
