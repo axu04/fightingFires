@@ -13,7 +13,7 @@ class Data_Collector():
     def __init__(self):
         self.take_pictures = True
 
-        self.rgb_handler = Rgb_Handler(0, 60)
+        self.rgb_handler = Rgb_Handler(2, 60)
         self.thermal_handler = Rgb_Handler(0, 60) # replace with actual thermal_handler
 
         # GUI member variables
