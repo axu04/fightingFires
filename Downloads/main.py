@@ -13,7 +13,7 @@ class Data_Collector():
     def __init__(self):
         self.take_pictures = True
 
-        self.rgb_handler = Rgb_Handler(0, 60)
+        self.rgb_handler = Rgb_Handler(2, 60)
         self.thermal_handler = Rgb_Handler(0, 60) # replace with actual thermal_handler
 
         # GUI member variables
@@ -21,9 +21,9 @@ class Data_Collector():
         self.window.title("Camera GUI")
 
         # Create a label for displaying the video feed
-        self.label_rgb = Label(self.window, width = 400, height= 300)
+        self.label_rgb = Label(self.window, width = 300, height= 300)
         self.label_rgb.pack(side = LEFT, padx=10, pady=10)
-        self.label_thermal = Label(self.window, width = 400, height= 300)
+        self.label_thermal = Label(self.window, width = 300, height= 300)
         self.label_thermal.pack(side = LEFT,padx=10, pady=10)
 
         # Make button now. Initialize later
@@ -43,7 +43,9 @@ class Data_Collector():
     def _render (self):
         if (self.take_pictures == True):
             rgb_frame = self.rgb_handler.get_frame()
+            rgb_frame = rgb_frame[:,:,::-1]
             thermal_frame = self.thermal_handler.get_frame()
+            thermal_frame = thermal_frame[:,:,::-1]
 
             rgbimg = Image.fromarray(rgb_frame)
             rgbimg = rgbimg.resize((400, 300))
