@@ -5,7 +5,6 @@ import numpy as np
 import cv2
 from datetime import datetime as dt
 import sys
-# import matplotlib.pyplot as plt
 
 class Thermal_Handler:
 
