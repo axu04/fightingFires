@@ -43,10 +43,15 @@ class Data_Collector():
     def _render (self):
         if (self.take_pictures == True):
             rgb_frame = self.rgb_handler.get_frame()
-            rgb_frame = rgb_frame[:,:,::-1]
+            rgb_frame_for_file_save = rgb_frame
+            '''rgb_frame_for_file_save = rgb_frame[:,:,::-1]'''
             thermal_frame = self.thermal_handler.get_frame()
             thermal_frame = thermal_frame[:,:,::-1]
-
+            
+            gray = cv2.cvtColor(rgb_frame, cv2.COLOR_BGR2GRAY)
+            blur = cv2.GaussianBlur(gray, (3,3), 0)
+            edges = cv2.Canny(image=blur, threshold1=50, threshold2=100)
+            rgb_frame = edges
             rgbimg = Image.fromarray(rgb_frame)
             rgbimg = rgbimg.resize((400, 300))
             rgbimgtk = ImageTk.PhotoImage(image=rgbimg)
@@ -69,8 +74,8 @@ class Data_Collector():
             # rgb_frame = h_seg(rgb_frame)
             # thm_frame = h_seg(thm_frame)
 
-            #cv2.imwrite(save_path_rgb, rgb_frame)
-            #cv2.imwrite(save_path_thm, thermal_frame)
+            '''cv2.imwrite(save_path_rgb, rgb_frame_for_file_save)
+            cv2.imwrite(save_path_thm, thermal_frame)'''
             self.img_num+=1
         self.window.after(10, self._render)
 
